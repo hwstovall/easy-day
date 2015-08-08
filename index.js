@@ -15,6 +15,8 @@ require('../../../styles/components/_EasyDay.scss');
  *                     __/ |                   __/ |
  *                    |___/                   |___/
  *
+ *      - by Harrison Stovall
+ *
  * EasyDay isa simple react component for selecting days of week and returning a bitmask.
  *
  */
