@@ -7,15 +7,20 @@ A simple and light day picker component for React.
 
 npm install easy-day --save
 
-## Usage - RequireJS
+## Usage
 
+Using browserify
+
+```javascript
 var EasyDay = require('easy-day');
 React.render(EasyDay);
+```
+Using ES6/Babel
 
-## Usage - ES6
-
+```javascript
 import EasyDay from 'easy-day'
 React.render(EasyDay);
+```
 
 ## Tests
 
