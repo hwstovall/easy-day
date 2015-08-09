@@ -1,6 +1,6 @@
 {
   "name": "easy-day",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple day picker component for React.",
   "main": "./lib/EasyDay.js",
   "scripts": {
