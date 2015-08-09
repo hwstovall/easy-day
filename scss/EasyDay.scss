@@ -1,0 +1,48 @@
+$base-color: #3498e9;
+
+.easy-day {
+  .days {
+    .day {
+      width: percentage(1/7);
+      display: inline-block;
+      padding: 0.1em;
+      text-align: center;
+
+      .inner {
+        cursor: pointer;
+        text-align: center;
+        transition: background 0.25s;
+        padding: 0.25em 0;
+        user-select: none;
+      }
+    }
+  }
+
+  &.light {
+    .inner {
+      background: opacify($base-color, 0.1);
+
+      &:hover{
+        background: opacify($base-color, 0.33);
+      }
+
+      &.checked{
+        background: opacify($base-color, 0.66);
+      }
+    }
+  }
+
+  &.dark {
+    .inner {
+      background: opacify($base-color, 0.05);
+
+      &:hover{
+        background: opacify($base-color, 0.1);
+      }
+
+      &.checked{
+        background: opacify($base-color, 0.5);
+      }
+    }
+  }
+}

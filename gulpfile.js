@@ -1,10 +1,27 @@
 var gulp = require('gulp');
 var babel = require('gulp-babel');
 var react = require('gulp-react');
+var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
+var rename = require('gulp-rename');
+var uglify = require('gulp-uglify');
 
-gulp.task('default', function(){
+gulp.task('build-js', function () {
     return gulp.src('./src/EasyDay.js')
         .pipe(babel())
         .pipe(react())
         .pipe(gulp.dest('./lib'))
+        .pipe(uglify())
+        .pipe(rename('easy-day.js'))
+        .pipe(gulp.dest('./dist'))
 });
+
+gulp.task('build-sass', function () {
+    return gulp.src('./scss/EasyDay.scss')
+        .pipe(sass())
+        .pipe(autoprefixer())
+        .pipe(rename('default.css'))
+        .pipe(gulp.dest('./dist'))
+});
+
+gulp.task('default', ['build-js', 'build-sass']);

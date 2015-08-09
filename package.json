@@ -1,10 +1,10 @@
 {
   "name": "easy-day",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simple day picker component for React.",
   "main": "./lib/EasyDay.js",
   "scripts": {
-    "test": "mocha ./tests/index.js --compilers js:babel/register"
+    "test": "mocha ./tests/EasyDay.js --compilers js:babel/register"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,11 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "chai": "^3.2.0",
+    "gulp-autoprefixer": "^2.3.1",
     "gulp-react": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4",
+    "gulp-uglify": "^1.2.0",
     "mocha": "^2.2.5"
   }
 }

@@ -1,0 +1,29 @@
+.easy-day .days .day {
+  width: 14.28571%;
+  display: inline-block;
+  padding: 0.1em;
+  text-align: center; }
+  .easy-day .days .day .inner {
+    cursor: pointer;
+    text-align: center;
+    -webkit-transition: background 0.25s;
+            transition: background 0.25s;
+    padding: 0.25em 0;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; }
+
+.easy-day.light .inner {
+  background: #3498e9; }
+  .easy-day.light .inner:hover {
+    background: #3498e9; }
+  .easy-day.light .inner.checked {
+    background: #3498e9; }
+
+.easy-day.dark .inner {
+  background: #3498e9; }
+  .easy-day.dark .inner:hover {
+    background: #3498e9; }
+  .easy-day.dark .inner.checked {
+    background: #3498e9; }
