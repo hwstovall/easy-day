@@ -37,6 +37,7 @@ npm test
 
 ## Release History
 
-* 0.1.2 Build minified distribution version and included default styling
+* 0.1.3 Fixed module exporting issue
+* 0.1.2 Built minified distribution version and included default styling
 * 0.1.1 Built distribution version with babel and react
 * 0.1.0 Initial release

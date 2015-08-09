@@ -1,9 +1,6 @@
 //Library dependencies
-const React = require('react');
-const classNames = require('classnames');
-
-//Styling
-//require('../../../styles/components/_EasyDay.scss');
+import React from 'react';
+import classNames from 'classnames';
 
 /**
  *                                    _
