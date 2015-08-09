@@ -37,6 +37,7 @@
   "devDependencies": {
     "babel": "^5.8.21",
     "chai": "^3.2.0",
+    "gulp-react": "^3.0.1",
     "mocha": "^2.2.5"
   }
 }
