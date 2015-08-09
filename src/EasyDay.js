@@ -3,7 +3,7 @@ const React = require('react');
 const classNames = require('classnames');
 
 //Styling
-require('../../../styles/components/_EasyDay.scss');
+//require('../../../styles/components/_EasyDay.scss');
 
 /**
  *                                    _
@@ -21,7 +21,70 @@ require('../../../styles/components/_EasyDay.scss');
  *
  */
 
-module.exports = class EasyDay extends React.Component {
+export default class EasyDay extends React.Component {
+    /**
+     * Get the default values for all properties.
+     *
+     * @type {{days: number, useDarkTheme: boolean, showLetters: boolean, showLongNames: boolean, showShortNames:
+     *     boolean, maxSelectedDays: number, minSelectedDays: number, onChange: Function}}
+     */
+    static defaultProps = {
+        days           : 0,
+        useDarkTheme   : false,
+        showLetters    : true,
+        showLongNames  : false,
+        showShortNames : false,
+        maxSelectedDays: 7,
+        minSelectedDays: 0,
+        onChange       : function () {
+        }
+    };
+
+    /**
+     * Describe each propType for React.
+     *
+     * @type {{days: *, useDarkTheme: *, showLetters: *, showLongNames: *, showShortNames: *, maxSelectedDays: *,
+     *     minSelectedDays: *, onChange: *}}
+     */
+    static propTypes = {
+        days           : React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.array,
+            React.PropTypes.object
+        ]),
+        useDarkTheme   : React.PropTypes.bool,
+        showLetters    : React.PropTypes.bool,
+        showLongNames  : React.PropTypes.bool,
+        showShortNames : React.PropTypes.bool,
+        maxSelectedDays: React.PropTypes.number,
+
+        //Min isn't really supported. The initial value of props.days needs to be checked.
+        minSelectedDays: React.PropTypes.number,
+
+        onChange: React.PropTypes.func
+    };
+
+    /**
+     * The letter abbreviations for each day name.
+     *
+     * @type {string[]}
+     */
+    static dayLetters = ["S", "M", "T", "W", "T", "F", "S"];
+
+    /**
+     * The full day names.
+     *
+     * @type {string[]}
+     */
+    static longDayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    /**
+     * The abbreviated day names.
+     *
+     * @type {string[]}
+     */
+    static shortDayNames = ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."];
+
     constructor() {
         super();
 
@@ -52,11 +115,11 @@ module.exports = class EasyDay extends React.Component {
                 break;
 
             case 'array':
-                bitmask = this.dayArrayToBitmask();
+                bitmask = EasyDay.dayArrayToBitmask(this.props.days);
                 break;
 
             case 'object':
-                bitmask = this.dayObjectToBitmask();
+                bitmask = EasyDay.dayObjectToBitmask(this.props.days);
                 break;
         }
 
@@ -103,44 +166,15 @@ module.exports = class EasyDay extends React.Component {
     }
 
     /**
-     * If the days property is a object with lower case day names as keys, this function converts it into a bitmask.
+     * Render it.
      *
-     * @returns {number} day bitmask
+     * @returns {XML}
      */
-    dayObjectToBitmask() {
-        let bitmask = 0;
-
-        bitmask += 1 * this.props.days.sunday;
-        bitmask += 2 * this.props.days.monday;
-        bitmask += 4 * this.props.days.tuesday;
-        bitmask += 8 * this.props.days.wednesday;
-        bitmask += 16 * this.props.days.thursday;
-        bitmask += 32 * this.props.days.friday;
-        bitmask += 64 * this.props.days.saturday;
-
-        return bitmask
-    }
-
-    /**
-     * If the day property is an array where index reflects day (Sunday is 0), this function converts the array values
-     * to a bitmask.
-     *
-     * @returns {number} day bitmask
-     */
-    dayArrayToBitmask() {
-        let bitmask = 0;
-        this.props.days.map((checked, i) => {
-            bitmask += checked * Math.pow(2, i);
-        });
-
-        return bitmask
-    }
-
     render() {
         let days = EasyDay.dayLetters.map((letter, index) => {
             let checked = this.isDaySet(index) ? 'checked' : '';
             return (
-                <div className='day'>
+                <div className='day' key={`${index}`}>
                     <div className={`inner ${checked}`} onClick={this.toggleDay.bind(this, index)}>
                         {this.labels[index]}
                     </div>
@@ -161,57 +195,69 @@ module.exports = class EasyDay extends React.Component {
             </div>
         )
     }
-};
 
-/**
- * Returns the number of set bytes in the day bitmask.
- *
- * @param bitmask
- * @returns {number} number of active bytes
- */
-EasyDay.countSetBytes = function (bitmask) {
-    let setBytes = 0;
+    /**
+     * If the days property is a object with lower case day names as keys, this function converts it into a bitmask.
+     *
+     * @param {object} days
+     * @returns {number} day bitmask
+     */
+    static dayObjectToBitmask(days = {}) {
+        const defaults = {
+            sunday   : 0,
+            monday   : 0,
+            tuesday  : 0,
+            wednesday: 0,
+            thursday : 0,
+            friday   : 0,
+            saturday : 0
+        };
 
-    let i = 7;
-    while (i--) {
-        setBytes += ((bitmask & Math.pow(2, i)) > 0) * 1;
+        //Merge the supplied object with the defaults to prevent undefined issues.
+        days = {...defaults, ...days};
+
+        let bitmask = 0;
+
+        bitmask += 1 * days.sunday;
+        bitmask += 2 * days.monday;
+        bitmask += 4 * days.tuesday;
+        bitmask += 8 * days.wednesday;
+        bitmask += 16 * days.thursday;
+        bitmask += 32 * days.friday;
+        bitmask += 64 * days.saturday;
+
+        return bitmask
     }
 
-    return setBytes;
-};
+    /**
+     * Returns the number of set bytes in the day bitmask.
+     *
+     * @param bitmask
+     * @returns {number} number of active bytes
+     */
+    static countSetBytes(bitmask) {
+        let setBytes = 0;
 
-EasyDay.propTypes = {
-    days           : React.PropTypes.oneOfType([
-        React.PropTypes.number,
-        React.PropTypes.array,
-        React.PropTypes.object
-    ]),
-    useDarkTheme   : React.PropTypes.bool,
-    showLetters    : React.PropTypes.bool,
-    showLongNames  : React.PropTypes.bool,
-    showShortNames : React.PropTypes.bool,
-    maxSelectedDays: React.PropTypes.number,
+        let i = 7;
+        while (i--) {
+            setBytes += ((bitmask & Math.pow(2, i)) > 0) * 1;
+        }
 
-    //Min isn't really supported. The initial value of props.days needs to be checked.
-    minSelectedDays: React.PropTypes.number,
-
-    onChange: React.PropTypes.func
-};
-
-EasyDay.defaultProps = {
-    days           : 0,
-    useDarkTheme   : false,
-    showLetters    : true,
-    showLongNames  : false,
-    showShortNames : false,
-    maxSelectedDays: 7,
-    minSelectedDays: 0,
-    onChange       : function () {
+        return setBytes;
     }
-};
 
-EasyDay.dayLetters = ["S", "M", "T", "W", "T", "F", "S"];
+    /**
+     * If the day property is an array where index reflects day (Sunday is 0), this function converts the array values
+     * to a bitmask.
+     *
+     * @returns {number} day bitmask
+     */
+    static dayArrayToBitmask(days) {
+        let bitmask = 0;
+        days.map((checked, i) => {
+            bitmask += checked * Math.pow(2, i);
+        });
 
-EasyDay.longDayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-EasyDay.shortDayNames = ["Sun.", "Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."];
+        return bitmask
+    }
+}
