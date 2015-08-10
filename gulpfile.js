@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var autoprefixer = require('gulp-autoprefixer');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
+var browserify = require('gulp-browserify');
 
 gulp.task('build-js', function () {
     return gulp.src('./src/EasyDay.js')
@@ -24,4 +25,12 @@ gulp.task('build-sass', function () {
         .pipe(gulp.dest('./dist'))
 });
 
-gulp.task('default', ['build-js', 'build-sass']);
+gulp.task('build-example', function(){
+    return gulp.src('./examples/src/example.js')
+        .pipe(babel())
+        .pipe(browserify())
+        .pipe(react())
+        .pipe(gulp.dest('./examples/build'))
+});
+
+gulp.task('default', ['build-js', 'build-sass', 'build-example']);
